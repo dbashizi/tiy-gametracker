@@ -1,5 +1,8 @@
-<html>
-<body>
+<html ng-app="GameTrackerApp">
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<script src="js/game-tracker-controllers.js"></script>
+
+<body ng-controller="GameTrackerController">
 {{^user}}
 <form action="/login" method="post">
     <input type="text" placeholder="Username" name="userName" required/>
@@ -17,8 +20,9 @@ Welcome, {{name}}!
 <br><br>
 
 <form action="/test-upload" method="post" enctype="multipart/form-data">
-    <input name="image" type="file">
+    <input name="image" type="file" id="imageFile">
     <button type="submit">Upload file</button>
+    <button type="button" ng-click="testUpload()">ng-upload()</button>
 </form>
 
 <br><br>

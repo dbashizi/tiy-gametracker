@@ -35,6 +35,8 @@ public class GameTrackerJSONController {
     public ArrayList<Game> testUploadString(@RequestBody FileAsString fileAsString) {
         if (fileAsString != null) {
             System.out.println("Got file!!!");
+            System.out.println("Working Directory = " +
+                    System.getProperty("user.dir"));
 //            System.out.println("fileAsString.fileString = " + fileAsString.getFileString());
 
             Base64 decoder = new Base64();

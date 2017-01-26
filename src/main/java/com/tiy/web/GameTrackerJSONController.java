@@ -1,9 +1,11 @@
 package com.tiy.web;
 
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.FileOutputStream;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
@@ -33,7 +35,24 @@ public class GameTrackerJSONController {
     public ArrayList<Game> testUploadString(@RequestBody FileAsString fileAsString) {
         if (fileAsString != null) {
             System.out.println("Got file!!!");
-            System.out.println("fileAsString.fileString = " + fileAsString.getFileString());
+//            System.out.println("fileAsString.fileString = " + fileAsString.getFileString());
+
+            Base64 decoder = new Base64();
+            byte[] decodedBytes = decoder.decode(fileAsString.getFileString());
+            fileAsString.setFileBytes(decodedBytes);
+
+            try {
+                if (fileAsString.getFileName() == null || fileAsString.getFileName().trim().equals("")) {
+                    fileAsString.setFileName("test.jpg");
+                }
+                FileOutputStream fileOuputStream = new FileOutputStream(fileAsString.getFileName());
+                fileOuputStream.write(fileAsString.getFileBytes());
+                fileOuputStream.close();
+            } catch (Exception exception) {
+                System.out.println("************* Issue writing out file *****************");
+                exception.printStackTrace();
+            }
+
         } else {
             System.out.println("No file!!!!");
         }

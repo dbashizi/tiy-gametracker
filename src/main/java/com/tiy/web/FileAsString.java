@@ -7,6 +7,18 @@ public class FileAsString {
 
     private String fileString;
     private byte[] fileBytes;
+    private String fileName;
+
+    public FileAsString() {
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
 
     public String getFileString() {
         return fileString;

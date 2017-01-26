@@ -22,6 +22,8 @@ public class GameTrackerJSONController {
         ArrayList<Game> gameList = new ArrayList<Game>();
         Iterable<Game> allGames = games.findAll();
         for (Game game : allGames) {
+            game.setTestDate(java.sql.Timestamp.valueOf(LocalDateTime.now()));
+            games.save(game); 
             gameList.add(game);
         }
 

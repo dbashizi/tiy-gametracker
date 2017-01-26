@@ -1,6 +1,7 @@
 package com.tiy.web;
 
 import javax.persistence.*;
+import java.sql.Date;
 
 @Entity
 @Table(name = "games")
@@ -24,6 +25,9 @@ public class Game {
     @Column(nullable = false)
     int releaseYear;
 
+    @Column(nullable = true)
+    java.sql.Timestamp testDate;
+
     public Game() {
     }
 
@@ -33,6 +37,14 @@ public class Game {
         this.genre = genre;
         this.releaseYear = releaseYear;
         this.user = user;
+    }
+
+    public java.sql.Timestamp getTestDate() {
+        return testDate;
+    }
+
+    public void setTestDate(java.sql.Timestamp testDate) {
+        this.testDate = testDate;
     }
 
     public User getUser() {

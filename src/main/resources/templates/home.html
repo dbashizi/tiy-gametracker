@@ -13,6 +13,14 @@ Welcome, {{name}}!
 <form action="/logout" method="post">
     <button type="submit">Logout</button>
 </form>
+
+<br><br>
+
+<form action="/test-upload" method="post" enctype="multipart/form-data">
+    <input name="image" type="file">
+    <button type="submit">Upload file</button>
+</form>
+
 <br><br>
 
 <a href="/">All</a>

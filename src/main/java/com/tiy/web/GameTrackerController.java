@@ -5,6 +5,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpSession;
@@ -38,6 +40,19 @@ public class GameTrackerController {
     public String logout(HttpSession session) {
         session.invalidate();
         return "redirect:/";
+    }
+
+    @RequestMapping(path = "/test-upload", method = RequestMethod.POST)
+    public String testUpload(HttpSession session, @RequestParam(value = "image", required = false) MultipartFile image) {
+        System.out.println("in testUpload()");
+        if (image != null) {
+            System.out.println("image: " + image.toString());
+            System.out.println(image.getOriginalFilename());
+        } else {
+            System.out.println("no image!!!!");
+        }
+
+        return "home";
     }
 
     @RequestMapping(path = "/", method = RequestMethod.GET)

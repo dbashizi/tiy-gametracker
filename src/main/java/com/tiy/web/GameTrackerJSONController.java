@@ -29,6 +29,25 @@ public class GameTrackerJSONController {
         return gameList;
     }
 
+    @RequestMapping(path = "/test-upload-string.json", method = RequestMethod.POST)
+    public ArrayList<Game> testUploadString(@RequestBody FileAsString fileAsString) {
+        if (fileAsString != null) {
+            System.out.println("Got file!!!");
+            System.out.println("fileAsString.fileString = " + fileAsString.getFileString());
+        } else {
+            System.out.println("No file!!!!");
+        }
+
+        ArrayList<Game> gameList = new ArrayList<Game>();
+        Iterable<Game> allGames = games.findAll();
+        for (Game game : allGames) {
+            game.setTestDate(java.sql.Timestamp.valueOf(LocalDateTime.now()));
+            games.save(game);
+            gameList.add(game);
+        }
+
+        return gameList;
+    }
     @RequestMapping(path = "/test-upload.json", method = RequestMethod.POST)
     public ArrayList<Game> testUpload(@RequestParam(value = "image", required = false) MultipartFile imageFile) {
 

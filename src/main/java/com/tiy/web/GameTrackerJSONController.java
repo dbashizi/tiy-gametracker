@@ -30,9 +30,13 @@ public class GameTrackerJSONController {
     }
 
     @RequestMapping(path = "/test-upload.json", method = RequestMethod.POST)
-    public ArrayList<Game> testUpload() {
+    public ArrayList<Game> testUpload(@RequestParam(value = "image", required = false) MultipartFile imageFile) {
 
-//        System.out.println("originalFileName: " + imageFile.getOriginalFilename());
+        if (imageFile != null) {
+            System.out.println("originalFileName: " + imageFile.getOriginalFilename());
+        } else {
+            System.out.println("no image!!!");
+        }
 
         ArrayList<Game> gameList = new ArrayList<Game>();
         Iterable<Game> allGames = games.findAll();

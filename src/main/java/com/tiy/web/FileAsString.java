@@ -14,6 +14,7 @@ public class FileAsString {
     int id;
 
     @Column(nullable = true)
+    @Lob
     private String fileString;
     @Column(nullable = true)
     private byte[] fileBytes;

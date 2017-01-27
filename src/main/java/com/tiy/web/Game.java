@@ -28,6 +28,9 @@ public class Game {
     @Column(nullable = true)
     java.sql.Timestamp testDate;
 
+    @Column(nullable = true)
+    String imageAsString;
+
     public Game() {
     }
 
@@ -37,6 +40,14 @@ public class Game {
         this.genre = genre;
         this.releaseYear = releaseYear;
         this.user = user;
+    }
+
+    public String getImageAsString() {
+        return imageAsString;
+    }
+
+    public void setImageAsString(String imageAsString) {
+        this.imageAsString = imageAsString;
     }
 
     public java.sql.Timestamp getTestDate() {

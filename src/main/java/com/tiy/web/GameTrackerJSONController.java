@@ -18,6 +18,9 @@ public class GameTrackerJSONController {
     @Autowired
     GameRepository games;
 
+    @Autowired
+    FileAsStringRepository fileRepo;
+
     @RequestMapping(path = "/games.json", method = RequestMethod.GET)
     public ArrayList<Game> getGames() {
         ArrayList<Game> gameList = new ArrayList<Game>();
@@ -33,6 +36,8 @@ public class GameTrackerJSONController {
 
     @RequestMapping(path = "/test-upload-string.json", method = RequestMethod.POST)
     public FileAsString testUploadString(@RequestBody FileAsString fileAsString) {
+        FileAsString savedToDB = null;
+
         if (fileAsString != null) {
             System.out.println("Got file!!!");
             System.out.println("Working Directory = " +
@@ -47,6 +52,9 @@ public class GameTrackerJSONController {
                 if (fileAsString.getFileName() == null || fileAsString.getFileName().trim().equals("")) {
                     fileAsString.setFileName("test.jpg");
                 }
+
+                savedToDB = fileRepo.save(fileAsString);
+
                 FileOutputStream fileOuputStream = new FileOutputStream(fileAsString.getFileName());
                 fileOuputStream.write(fileAsString.getFileBytes());
                 fileOuputStream.close();
@@ -59,7 +67,22 @@ public class GameTrackerJSONController {
             System.out.println("No file!!!!");
         }
 
-        return fileAsString;
+//        ArrayList<Game> gameList = new ArrayList<Game>();
+//        Iterable<Game> allGames = games.findAll();
+//        for (Game game : allGames) {
+//            game.setTestDate(java.sql.Timestamp.valueOf(LocalDateTime.now()));
+//            games.save(game);
+//            gameList.add(game);
+//        }
+//
+//        return gameList;
+        if (savedToDB != null) {
+            System.out.println("Returning version saved from DB");
+            return savedToDB;
+        } else {
+            System.out.println("Echoing version passed in");
+            return fileAsString;
+        }
     }
     @RequestMapping(path = "/test-upload.json", method = RequestMethod.POST)
     public ArrayList<Game> testUpload(@RequestParam(value = "image", required = false) MultipartFile imageFile) {

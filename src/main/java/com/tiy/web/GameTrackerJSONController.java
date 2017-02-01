@@ -8,6 +8,9 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.FileOutputStream;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Created by dbashizi on 1/9/17.
@@ -21,6 +24,9 @@ public class GameTrackerJSONController {
     @Autowired
     FileAsStringRepository fileRepo;
 
+    @Autowired
+    PresenceUserRepository userRepo;
+
     @RequestMapping(path = "/games.json", method = RequestMethod.GET)
     public ArrayList<Game> getGames() {
         ArrayList<Game> gameList = new ArrayList<Game>();
@@ -32,6 +38,21 @@ public class GameTrackerJSONController {
         }
 
         return gameList;
+    }
+
+    @RequestMapping(path = "/users.json", method = RequestMethod.GET)
+    public List<PresenceUser> getUsers() {
+        Iterable<PresenceUser> users = userRepo.findAll();
+        List<PresenceUser> usersList = new ArrayList<PresenceUser>();
+        int userIndex = 0;
+        Iterator<PresenceUser> usersIterator = users.iterator();
+        while (usersIterator.hasNext()) {
+            System.out.println("getting user " + userIndex);
+            usersList.add(usersIterator.next());
+            userIndex++;
+        }
+        return usersList;
+
     }
 
     @RequestMapping(path = "/test-upload-string.json", method = RequestMethod.POST)

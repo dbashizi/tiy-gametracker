@@ -10,6 +10,7 @@ import java.io.File;
 import java.util.List;
 import java.util.Scanner;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 @RunWith(SpringRunner.class)
@@ -24,6 +25,9 @@ public class GameTrackerSpringApplicationTests {
 
 	@Autowired
 	PresenceUserRepository userRepo;
+
+	@Autowired
+	ContactRequestRepository contactRequestRepo;
 
 	@Test
 	public void contextLoads() {
@@ -49,6 +53,52 @@ public class GameTrackerSpringApplicationTests {
 		for (Game game : allGames) {
 			System.out.println("Game: " + game.getName());
 		}
+	}
+
+	@Test
+	public void testEventContactRequest() {
+		PresenceUser user1 = new PresenceUser();
+		user1.setFirstName("Test1");
+		user1.setLastName("Tester1");
+		PresenceUser user2 = new PresenceUser();
+		user2.setFirstName("Test2");
+		user2.setLastName("Tester2");
+
+		userRepo.save(user1);
+		assertNotNull(user1.getId());
+		userRepo.save(user2);
+		assertNotNull(user2.getId());
+
+		ContactRequest contactRequest = new ContactRequest();
+		contactRequest.setStatus("PENDING");
+		contactRequest.setRequester(user1);
+		contactRequest.setRequestee(user2);
+
+		contactRequestRepo.save(contactRequest);
+		assertNotNull(contactRequest.getId());
+		assertNotNull(contactRequest.getRequestee());
+		assertNotNull(contactRequest.getRequester());
+		assertEquals(user2.getId(), contactRequest.getRequestee().getId());
+		assertEquals(user1.getId(), contactRequest.getRequester().getId());
+
+		// retrieve the user from the database, and make sure it has the contact request
+		// associated with it
+		user1 = userRepo.findOne(user1.getId());
+		assertNotNull(user1.getRequestsMade());
+		assertEquals(1, user1.getRequestsMade().size());
+		user2 = userRepo.findOne(user2.getId());
+		assertNotNull(user2.getRequestsReceived());
+		assertEquals(1, user2.getRequestsReceived().size());
+
+		System.out.println("User 1: " + user1.getId());
+		System.out.println("User 2: " + user2.getId());
+		System.out.println("Contact Requester " + contactRequest.getRequester().getId());
+		System.out.println("Contact Requestee " + contactRequest.getRequestee().getId());
+		System.out.println("Contact Request ID: " + contactRequest.getId());
+
+//		contactRequestRepo.delete(contactRequest);
+//		userRepo.delete(user1);
+//		userRepo.delete(user2);
 	}
 
 	@Test

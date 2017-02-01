@@ -1,6 +1,9 @@
 package com.tiy.web;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
+import java.util.Set;
 
 /**
  * Created by dbashizi on 1/26/17.
@@ -11,21 +14,45 @@ public class PresenceUser {
 
     @Id
     @GeneratedValue
-    private Long id;
+    private Integer id;
     private String firstName;
     private String lastName;
     private String address;
     private String location;
     private String position;
 
+
+    @OneToMany(fetch = FetchType.EAGER, orphanRemoval = true, mappedBy="requester")
+    @JsonManagedReference
+    private Set<ContactRequest> requestsMade;
+    @OneToMany(fetch = FetchType.EAGER,orphanRemoval = true, mappedBy="requestee")
+    @JsonManagedReference
+    private Set<ContactRequest> requestsReceived;
+
     public PresenceUser() {
     }
 
-    public Long getId() {
+    public Set<ContactRequest> getRequestsMade() {
+        return requestsMade;
+    }
+
+    public void setRequestsMade(Set<ContactRequest> requestsMade) {
+        this.requestsMade = requestsMade;
+    }
+
+    public Set<ContactRequest> getRequestsReceived() {
+        return requestsReceived;
+    }
+
+    public void setRequestsReceived(Set<ContactRequest> requestsReceived) {
+        this.requestsReceived = requestsReceived;
+    }
+
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

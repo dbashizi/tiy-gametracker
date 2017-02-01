@@ -16,10 +16,18 @@ public class FileAsString {
     @Column(nullable = true)
     @Lob
     private String fileString;
-    @Column(nullable = true)
-    private byte[] fileBytes;
+
     @Column(nullable = true)
     private String fileName;
+
+
+
+
+
+
+
+    @Column(nullable = true)
+    private byte[] fileBytes;
 
     public FileAsString() {
     }
